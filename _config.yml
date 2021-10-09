@@ -18,9 +18,9 @@ timezone: United States
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Blog - Burak krygeNNN Baris                          # the main title
+title: Burak Baris                          # the main title
 
-tagline: Cyber Security   # it will display as the sub-title
+tagline: krygeNNN - Cyber Security   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
   Description
