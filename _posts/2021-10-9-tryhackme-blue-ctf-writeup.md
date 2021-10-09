@@ -4,17 +4,17 @@ author: krygennn
 date: 2021-10-9 00:59
 categories: [Blogging,cyber-security]
 image:
-    src: /assets/img/posts/tryhackme-blue-ctf-writeup/blue1.png
+    src: /assets/img/posts/tryhackme-blue-ctf-writeup/blue1.jpg
     alt: TRYHACKME BLUE
 tags: [ctf,pentesting]
 ---
-#TRYHACKME BLUE - CTF WRITEUP 
+# TRYHACKME BLUE - CTF WRITEUP 
 Blue is a machine that specifically designed to cover EternalBlue (CVE-2017-0144), 
 which allows remote attackers to execute arbitrary code via crafted packets, 
 aka "Windows SMB Remote Code Execution Vulnerability." 
 
 
-##Enumeration 
+## Enumeration 
 
 In order to enumerate the host, we will run Network Mapper (nmap) to discover opened ports and services.   
 
