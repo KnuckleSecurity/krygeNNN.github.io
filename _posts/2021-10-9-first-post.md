@@ -1,6 +1,6 @@
 ---
 title: first post
-author: krygeNNN
+author: krygennn
 date: 2021-10-9 00:59
 categories: [Blogging]
 tags: [github, open-source]
