@@ -21,17 +21,15 @@ aka "Windows SMB Remote Code Execution Vulnerability."
 
 In order to enumerate the host, we will run Network Mapper (nmap) to discover opened ports and services.   
 
-```bash
-    -sV >  Probe open ports to determine service/version info 
 
-    -sC or --script=default >  Performs a script scan using the default set of scripts.
+| Param                        | Function          | 
+|:-----------------------------|:-----------------|
+|-sV |Probe open ports to determine service/version info|
+|-sC or --script=default | Performs a script scan using the default set of scripts|
+|-O  | Enable OS detection|
+|-T4 | T{0-5} Set scan speed, higher is faster|
+|-p- | Scan all 65536 ports|
 
-    -O > Enable OS detection.
-
-    -T4 > T{0-5} Set scan speed, higher is faster.
-
-    -p- > Scan all 65536 ports.
-```
 
 Full command : `nmap {machine IP} -sV -sC -O -T4 -p-`
 
