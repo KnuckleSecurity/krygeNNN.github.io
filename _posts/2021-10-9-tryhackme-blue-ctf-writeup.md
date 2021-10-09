@@ -15,17 +15,17 @@ aka "Windows SMB Remote Code Execution Vulnerability."
 
 
 ## Enumeration 
-
+´´´
 In order to enumerate the host, we will run Network Mapper (nmap) to discover opened ports and services.   
 
-    -sV >  Probe open ports to determine service/version info 
+** -sV >  Probe open ports to determine service/version info 
 
-    -sC or --script=default >  Performs a script scan using the default set of scripts.
+**  -sC or --script=default >  Performs a script scan using the default set of scripts.
 
-    -O > Enable OS detection.
+**  -O > Enable OS detection.
 
-    -T4 > T{0-5} Set scan speed, higher is faster.
+**  -T4 > T{0-5} Set scan speed, higher is faster.
 
-    -p- > Scan all 65536 ports.
+**  -p- > Scan all 65536 ports.
 
-Full command, nmap {machine IP} -sV -sC -O -T4 -p- 
+Full command : ´´´ nmap {machine IP} -sV -sC -O -T4 -p- ´´´ 
