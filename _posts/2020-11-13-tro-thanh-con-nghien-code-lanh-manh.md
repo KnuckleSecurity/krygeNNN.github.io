@@ -1,9 +1,11 @@
-
 ---
 title: Trở thành con nghiện code lành mạnh
 author: thuanpham2311
 date: 2020-11-13 20:55:00
 categories: [Blogging]
+image:
+  src: /assets/img/senpaiMeme.jpg
+  alt: senpaiMeme
 tags: [productive]
 ---
 
