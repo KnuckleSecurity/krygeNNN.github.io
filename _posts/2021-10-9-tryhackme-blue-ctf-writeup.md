@@ -32,4 +32,4 @@ In order to enumerate the host, we will run Network Mapper (nmap) to discover op
 
 
 Full command : `nmap {machine IP} -sV -sC -O -T4 -p-`
-
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue2.jpg){: width="1220" height:"1373" style="max-width: 80%"}
