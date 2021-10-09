@@ -44,9 +44,9 @@ After went through the web searching phase for that specific service, we got thi
 ## Exploitation 
 
 Let's use `Metasploit` framework
-![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue3.jpg){: .shadow .left}
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue3.jpg){: .shadow }
 And than use `MS17-010`
-![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue4.jpg){: .shadow .left}
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue4.jpg){: .shadow }
 
 Six modules are showed up, two of them are auxiliary modules and the rest are exploiting scripts.In a real-life scenario it is not that obvious that those pre-arranged scripts would work.It is highly possible that target system would crash if you ran any careless exploit to target system or you are not sure host is vulnerable to it. To check this we can run `auxiliary module`.
 
