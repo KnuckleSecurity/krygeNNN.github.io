@@ -33,6 +33,7 @@ In order to enumerate the host, we will run Network Mapper (nmap) to discover op
 
 Full command : `nmap {machine IP} -sV -sC -O -T4 -p-`
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue2.jpg){: .shadow style="max-width: 80%" .normal} 
+<br>
 It seems like plenty of services are enabled in the system.However one of them catches the eye,
 
 `445 /tcp open microsoft-ds Windows 7 Professional 7601 Service Pack 1 microsoft-ds (workgroup : WORKGROUP)` 
@@ -44,9 +45,11 @@ After went through the web searching phase for that specific service, we got thi
 ## Exploitation 
 
 Let's use `Metasploit` framework
-![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue3.jpg){: .shadow }
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue3.jpg){: .shadow .normal}
+<br>
 And than use `MS17-010`
-![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue4.jpg){: .shadow }
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue4.jpg){: .shadow .normal}
+<br>
 
 Six modules are showed up, two of them are auxiliary modules and the rest are exploiting scripts.In a real-life scenario it is not that obvious that those pre-arranged scripts would work.It is highly possible that target system would crash if you ran any careless exploit to target system or you are not sure host is vulnerable to it. To check this we can run `auxiliary module`.
 
