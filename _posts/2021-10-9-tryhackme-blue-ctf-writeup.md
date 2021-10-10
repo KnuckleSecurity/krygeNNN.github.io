@@ -13,8 +13,8 @@ tags: [ctf,pentesting,meterpreter,remote-code-execution,buffer-overflow,cracking
 Blue is a machine that specifically designed to cover EternalBlue (CVE-2017-0144), 
 which allows remote attackers to execute arbitrary code via crafted packets, 
 aka "Windows SMB Remote Code Execution Vulnerability." 
-
-
+<br>
+<br>
 ## 1-Enumeration 
 
 In order to enumerate the host, we will run Network Mapper (**nmap**) to discover opened ports and services.   

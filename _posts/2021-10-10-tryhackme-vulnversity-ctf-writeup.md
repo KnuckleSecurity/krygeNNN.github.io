@@ -14,7 +14,6 @@ Vulnversity is a machine that combines reconnaissance, web attack vectors and pr
 <br>
 <br>
 ## 1-Enumeration
-<br>
 Let's start with enumerating the host.I will use Network Mapper (`nmap`) tool in order to scan and probe opened ports and active services to find my attack vector. 
 
 | Parameter  | Functionality                                      |
@@ -55,7 +54,6 @@ It seems like we've find our playground :) Website have got an upload functional
 <br>
 <br>
 ## 2-Exploitation
-<br>
 First thing came into my mind was to upload a php reverse shell, so let's try it out.
 
 [**PHP Reverse Shell Script >>**](https://www.tryhackme.com/room/vulnversity)
@@ -104,7 +102,6 @@ Excellent, we are in !
 <br>
 <br>
 ## Flag Capturing and Privilege Eseclation
-<br>
 Nevertheless, this shell is not stable righ now, we need to spawn a python shell.
 <br>Run `python -c 'import pty;pty.spawn("/bin/bash")'`, and also `export TERM=xterm`.
 ![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln15.jpg){: .shadow style="max-width: 80%" .normal} 
