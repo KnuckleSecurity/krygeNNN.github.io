@@ -33,8 +33,6 @@ In order to enumerate the host, we will run Network Mapper (nmap) to discover op
 
 Full command : `nmap {machine IP} -sV -sC -O -T4 -p-`
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue2.jpg){: .shadow style="max-width: 80%" .normal} 
-
-<br>
 It seems like plenty of services are enabled in the system.However one of them catches the eye,
 
 `445 /tcp open microsoft-ds Windows 7 Professional 7601 Service Pack 1 microsoft-ds (workgroup : WORKGROUP)` 
