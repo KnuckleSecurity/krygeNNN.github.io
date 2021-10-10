@@ -22,13 +22,13 @@ aka "Windows SMB Remote Code Execution Vulnerability."
 In order to enumerate the host, we will run Network Mapper (`nmap`) to discover opened ports and services.   
 
 
-| Parameter                    | Functionality          | 
-|:-----------------------------|:-----------------|
-|-sV | Probe open ports to determine service/version info|
+| Parameter              | Functionality                                          | 
+|:-----------------------|:-------------------------------------------------------|
+|-sV                     | Probe open ports to determine service/version info     |
 |-sC or --script=default | Performs a script scan using the default set of scripts|
-|-O  | Enable OS detection|
-|-T4 | T{0-5} Set scan speed, higher is faster|
-|-p- | Scan all 65536 ports|
+|-O                      | Enable OS detection                                    |
+|-T4                     | T{0-5} Set scan speed, higher is faster                |
+|-p-                     | Scan all 65536 ports                                   |
 
 
 Full command : `nmap {machine IP} -sV -sC -O -T4 -p-`
@@ -95,11 +95,11 @@ As you can see, it is `NTLM`.
 So, as we know the hash type, we can move forward for to cracking it.I will use `John the Ripper`,you can use `Hashcat` or any other cypher cracking tool.
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue12.jpg){: .shadow .normal}
 <br>
-| Parameter                    | Functionality          | 
-|:-----------------------------|:-----------------------|
-|hashes | ASCII Text file, which contains copied hashes.|
-|--wordlist | Location of the wordlist|
-|-format | Hash format|
+| Parameter                    | Functionality                                 | 
+|:-----------------------------|:----------------------------------------------|
+|hashes                        | ASCII Text file, which contains copied hashes.|
+|--wordlist                    | Location of the wordlist                      |
+|-format                       | Hash format                                   |
 
 We've cracked the first hash.
 
