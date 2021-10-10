@@ -32,7 +32,7 @@ Full command : `nmap {machine IP} -sV -sC -O -T4 -p-`
 <br>
 It seems like plenty of services are enabled in the system.However one of them catches the eye.
 
-_445 /tcp open microsoft-ds Windows 7 Professional 7601 Service Pack 1 microsoft-ds (workgroup : WORKGROUP)_ 
+_**445 /tcp open microsoft-ds Windows 7 Professional 7601 Service Pack 1 microsoft-ds (workgroup : WORKGROUP)**_ 
 
 After went through the web searching phase for that specific service, we got this:
 
