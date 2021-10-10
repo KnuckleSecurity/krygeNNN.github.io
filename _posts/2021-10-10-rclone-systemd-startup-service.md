@@ -6,7 +6,7 @@ categories: [Blogging,linux-tools,service-files]
 image:
     src: /assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln1.jpg
     alt: TRYHACKME BLUE
-tags: [ctf,pentesting,linux-privesc,bruteforce,cracking,reverse-shell,php,shell-injection]
+tags: [rclone,rsync,systemd]
 ---
 # Rclone systemd startup service 
 

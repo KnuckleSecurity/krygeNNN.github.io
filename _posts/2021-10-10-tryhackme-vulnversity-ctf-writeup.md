@@ -5,7 +5,7 @@ date: 2021-10-9 18:04
 categories: [Blogging,cyber-security]
 image:
     src: /assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln1.jpg
-    alt: TRYHACKME BLUE
+    alt: TRYHACKME VULNVERSITY
 tags: [ctf,pentesting,linux-privesc,bruteforce,cracking,reverse-shell,php,shell-injection]
 ---
 [**Solve Yourself >>**](https://www.tryhackme.com/room/vulnversity)
