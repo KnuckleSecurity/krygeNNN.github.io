@@ -6,7 +6,7 @@ categories: [Blogging,cyber-security]
 image:
     src: /assets/img/posts/tryhackme-blue-ctf-writeup/blue1.jpg
     alt: TRYHACKME BLUE
-tags: [ctf,pentesting]
+tags: [ctf,pentesting,meterpreter,remote-code-execution,buffer-overflow,cracking]
 ---
 [**Solve Yourself >>**](https://www.tryhackme.com/room/blue)
 
@@ -19,7 +19,7 @@ aka "Windows SMB Remote Code Execution Vulnerability."
 
 ## 1-Enumeration 
 
-In order to enumerate the host, we will run Network Mapper (`nmap`) to discover opened ports and services.   
+In order to enumerate the host, we will run Network Mapper (**nmap**) to discover opened ports and services.   
 
 | Parameter              | Functionality                                          | 
 |:-----------------------|:-------------------------------------------------------|
@@ -34,7 +34,7 @@ Full command : `nmap {machine IP} -sV -sC -O -T4 -p-`
 <br>
 It seems like plenty of services are enabled in the system.However one of them catches the eye.
 
-`445 /tcp open microsoft-ds Windows 7 Professional 7601 Service Pack 1 microsoft-ds (workgroup : WORKGROUP)` 
+_445 /tcp open microsoft-ds Windows 7 Professional 7601 Service Pack 1 microsoft-ds (workgroup : WORKGROUP)_ 
 
 After went through the web searching phase for that specific service, we got this:
 
@@ -43,11 +43,11 @@ After went through the web searching phase for that specific service, we got thi
 
 ## 2-Exploitation 
 
-Let's use `Metasploit` framework
+Let's use **Metasploit** framework
 <br>
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue3.jpg){: .shadow .normal}
 <br>
-And than use `MS17-010`
+And than use **MS17-010**
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue4.jpg){: .shadow .normal}
 <br>
 
@@ -56,15 +56,15 @@ Six modules are showed up, two of them are auxiliary modules and the rest are ex
 If you are not familiar with what an auxiliary module is, it is some kind of script that helps us to verify if the target system is vulnerable to our actual exploit or not, without crashing or corrupting the system.
 More technical description would be as following; An auxiliary module does not execute a payload. It can be used to perform arbitrary actions that may not be directly related to exploitation. Examples of auxiliary modules include scanners, fuzzers, and denial of service attacks. 
  
-In this case Metasploit database offers us those two auxiliary files, lets use `auxiliary/scanner/smb/smb_ms17_010` ,than set RHOSTS  as IP address of  our target machine, than run it.
+In this case Metasploit database offers us those two auxiliary files, run  `use auxiliary/scanner/smb/smb_ms17_010` ,than set RHOSTS  as IP address of  our target machine, than run it.
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue5.jpg){: .shadow .normal}
 <br>
-As you can see, the output tells us the that, `Host is likely VULNERABLE to MS17-010` !
+As you can see, the output tells us the that, **Host is likely VULNERABLE to MS17-010 !!!** 
 After that point we got our proof that the exploit would work.So let us move to the exploitation phase.
  
 _Exploit - An exploit module executes a sequence of commands to target a specific vulnerability found in a system or application. An exploit module takes advantage of a vulnerability to provide access to the target system. Exploit modules include buffer overflow, code injection, and web application exploit._
  
-Now we will `use exploit/windows/smb/ms17_010_eternalblue`. Jlike the previous auxiliary module, set RHOSTS as our target machine and run it.
+Now we will run `use exploit/windows/smb/ms17_010_eternalblue`. like the previous auxiliary module, set RHOSTS as our target machine and run it.
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue6.jpg){: .shadow .normal}
 <br>
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue7.jpg){: .shadow .normal}
@@ -89,9 +89,9 @@ Just like the getsystem command, meterpreter provides `hashdump` command, which 
 We need to find out what kind of hashes they are. It is easy to tell they are NTLM hashes, because Windows is using NTLM hashes for system as default but for the best practice, lets use a hash analyzer to identify the type, you can use any hash analyzer.
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue11.jpg){: .shadow .normal}
 <br>
-As you can see, it is `NTLM`.
+As you can see, it is **NTLM**.
 
-So, as we know the hash type, we can move forward for to cracking it.I will use `John the Ripper`,you can use `Hashcat` or any other cypher cracking tool.
+So, as we know the hash type, we can move forward for to cracking it.I will use **John the Ripper**,you can use **Hashcat** or any other cypher cracking tool.
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue12.jpg){: .shadow .normal}
 <br>
 
