@@ -10,8 +10,6 @@ tags: [ctf,pentesting,meterpreter,remote-code-execution,buffer-overflow,cracking
 ---
 [**Solve Yourself >>**](https://www.tryhackme.com/room/blue)
 
-# TRYHACKME BLUE - CTF WRITEUP 
-
 Blue is a machine that specifically designed to cover EternalBlue (CVE-2017-0144), 
 which allows remote attackers to execute arbitrary code via crafted packets, 
 aka "Windows SMB Remote Code Execution Vulnerability." 

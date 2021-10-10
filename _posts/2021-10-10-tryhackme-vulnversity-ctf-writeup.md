@@ -10,7 +10,6 @@ tags: [ctf,pentesting,linux-privesc,bruteforce,cracking,reverse-shell,php,shell-
 ---
 [**Solve Yourself >>**](https://www.tryhackme.com/room/vulnversity)
 
-# TRYHACKME VULNVERSITY - CTF WRITEUP 
 Vulnversity is a machine that combines reconnaissance, web attack vectors and privilege escalation methods together.
 <br>
 <br>

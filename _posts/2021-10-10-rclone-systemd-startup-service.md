@@ -5,8 +5,6 @@ date: 2021-10-9 18:17
 categories: [Blogging,linux-tools,service-files]
 tags: [rclone,rsync,systemd]
 ---
-# Rclone systemd startup service 
-
 Create a systemd file by running;
 `vim /etc/systemd/system/rclone.service`
 Insert the following.
