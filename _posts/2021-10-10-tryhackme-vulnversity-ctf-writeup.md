@@ -101,7 +101,7 @@ shell script that you have uploaded.
 Excellent, we are in !
 <br>
 <br>
-## Flag Capturing and Privilege Eseclation
+## 3-Flag Capturing and Privilege Eseclation
 Nevertheless, this shell is not stable righ now, we need to spawn a python shell.
 <br>Run `python -c 'import pty;pty.spawn("/bin/bash")'`, and also `export TERM=xterm`.
 ![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln15.jpg){:style="max-width: 80%" .normal} 
