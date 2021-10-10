@@ -17,7 +17,7 @@ which allows remote attackers to execute arbitrary code via crafted packets,
 aka "Windows SMB Remote Code Execution Vulnerability." 
 
 
-## Enumeration 
+## 1-Enumeration 
 
 In order to enumerate the host, we will run Network Mapper (`nmap`) to discover opened ports and services.   
 
@@ -42,7 +42,7 @@ After went through the web searching phase for that specific service, we got thi
 
 [**CVE-2017-0144 - EternalBlue SMB Remote Code Execution (MS17-010)**](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0144)
 <br>
-## Exploitation 
+## 2-Exploitation 
 
 Let's use `Metasploit` framework
 <br>
@@ -83,7 +83,7 @@ SearchIndexer.exe seems like a good candidate to migrate our process.So type mig
 Right now we have %100 access to target system and our session's persistance is solid, lets move on for crediantels and flags.
 <br>
 
-## Post Exploitation - Capturing the Flags 
+## 3-Post Exploitation - Capturing the Flags 
 Just like the getsystem command, meterpreter provides `hashdump` command, which brings the system hashes for us.
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue10.jpg){: .shadow .normal}
 <br>
