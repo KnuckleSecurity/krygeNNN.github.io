@@ -1,6 +1,6 @@
 ---
 layout: About
-title: CV
-icon: fas fa-file-user
+title: cv
+icon: fas fa-file
 order: 5
 ---
