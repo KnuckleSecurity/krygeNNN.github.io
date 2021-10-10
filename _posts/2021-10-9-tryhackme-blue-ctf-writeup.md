@@ -24,7 +24,7 @@ In order to enumerate the host, we will run Network Mapper (`nmap`) to discover 
 
 | Parameter                    | Functionality          | 
 |:-----------------------------|:-----------------|
-|-sV |Probe open ports to determine service/version info|
+|-sV | Probe open ports to determine service/version info|
 |-sC or --script=default | Performs a script scan using the default set of scripts|
 |-O  | Enable OS detection|
 |-T4 | T{0-5} Set scan speed, higher is faster|
@@ -96,10 +96,11 @@ So, as we know the hash type, we can move forward for to cracking it.I will use 
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue12.jpg){: .shadow .normal}
 <br>
 | Parameter                    | Functionality          | 
-|:-----------------------------|:-----------------|
-|hashes|ASCII Text file, which contains copied hashes.|
-|--wordlist| Location of the wordlist|
-|-format| Hash format|
+|:-----------------------------|:-----------------------|
+|hashes | ASCII Text file, which contains copied hashes.|
+|--wordlist | Location of the wordlist|
+|-format | Hash format|
+
 We've cracked the first hash.
 
 Now type shell to use windows' shell instead of meterpreter shell and start looking for flags.
