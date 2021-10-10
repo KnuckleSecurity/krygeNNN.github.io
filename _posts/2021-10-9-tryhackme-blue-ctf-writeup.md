@@ -64,7 +64,7 @@ After that point we got our proof that the exploit would work.So let us move to 
  
 _Exploit - An exploit module executes a sequence of commands to target a specific vulnerability found in a system or application. An exploit module takes advantage of a vulnerability to provide access to the target system. Exploit modules include buffer overflow, code injection, and web application exploit._
  
-Now we will `use exploit/windows/smb/ms17_010_eternalblue.Just` like the previous auxiliary module, set RHOSTS as our target machine and run it.
+Now we will `use exploit/windows/smb/ms17_010_eternalblue`. Jlike the previous auxiliary module, set RHOSTS as our target machine and run it.
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue6.jpg){: .shadow .normal}
 <br>
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue7.jpg){: .shadow .normal}
