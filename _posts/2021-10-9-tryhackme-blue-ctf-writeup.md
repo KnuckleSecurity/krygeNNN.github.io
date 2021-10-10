@@ -76,7 +76,7 @@ Now we need to use `getsystem` command,which is provided by Metasploit's meterpr
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue8.jpg){: .shadow .normal}
 <br>
 Now, lets list all runnig processes with `ps` command, we will need to migrate our suspicious process into trusted process to ensure consistency.
-![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue8.jpg){: .shadow .normal}
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue9.jpg){: .shadow .normal}
 <br>
 SearchIndexer.exe seems like a good candidate to migrate our process.So type migrate {PID} to migrate spoolsv.exe, which is our reverse tcp payload.
 
@@ -85,15 +85,15 @@ Right now we have %100 access to target system and our session's persistance is 
 
 ## Post Exploitation - Capturing the Flags 
 Just like the getsystem command, meterpreter provides `hashdump` command, which brings the system hashes for us.
-![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue9.jpg){: .shadow .normal}
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue10.jpg){: .shadow .normal}
 <br>
 We need to find out what kind of hashes they are. It is easy to tell they are NTLM hashes, because Windows is using NTLM hashes for system as default but for the best practice, lets use a hash analyzer to identify the type, you can use any hash analyzer.
-![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue10.jpg){: .shadow .normal}
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue11.jpg){: .shadow .normal}
 <br>
 As you can see, it is `NTLM`.
 
 So, as we know the hash type, we can move forward for to cracking it.I will use `John the Ripper`,you can use `Hashcat` or any other cypher cracking tool.
-![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue11.jpg){: .shadow .normal}
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue12.jpg){: .shadow .normal}
 <br>
 | Parameter                    | Functionality          | 
 |:-----------------------------|:-----------------|
@@ -104,13 +104,13 @@ We've cracked the first hash.
 
 Now type shell to use windows' shell instead of meterpreter shell and start looking for flags.
 #### flag1.txt
-![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue12.jpg){: .shadow .normal}
-<br>
-#### flag2.txt
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue13.jpg){: .shadow .normal}
 <br>
-#### flag3.txt
+#### flag2.txt
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue14.jpg){: .shadow .normal}
+<br>
+#### flag3.txt
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue15.jpg){: .shadow .normal}
 <br>
 Congrats! End of the machine.
 
