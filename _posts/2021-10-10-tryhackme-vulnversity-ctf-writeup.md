@@ -25,15 +25,12 @@ Let's start with enumerating the host.I will use Network Mapper (`nmap`) tool in
 |-p-         |Scan all 65536 ports.                               |
 |-oN         |Outputfile                                          |
 
-
 Full command: `nmap {machine IP} -sV -sS -O -T4 -p- -oN vulnversity.nmap`
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln2.jpg){: .shadow style="max-width: 80%" .normal} 
-<br>
-As you can see from the results, we have got six different ports active to create our attack vector.If you do your research and investigate whether one of these services have any vulnerabilities or not, you will return to your home empty handed.You can try anonymous login to FTP protocol, or try to make a SSH connection but you would fail just like I did.None of these services have any vulnerabilities that would put us in the target system.
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln2.jpg){:active to create our attack vector.If you do your research and investigate whether one of these services have any vulnerabilities or not, you will return to your home empty handed.You can try anonymous login to FTP protocol, or try to make a SSH connection but you would fail just like I did.None of these services have any vulnerabilities that would put us in the target system.
  
 Other than that **"3333/tcp open  http   Apache httpd 2.4.18 ((Ubuntu))"** catches the eye, so lets start to investigate the webpage that the host is running on its port 3333.
 
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln3.jpg){: .shadow style="max-width: 80%" .normal} 
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln3.jpg){:style="max-width: 80%" .normal} 
 <br>
 Fire up your browser and type **{machine IP}:3333** to your address bar.You will see the webpage shown above.Nothing suspicious there, so lets start to extract the directories with the help of the `gobuster` tool.
 
@@ -45,10 +42,10 @@ Fire up your browser and type **{machine IP}:3333** to your address bar.You will
 Full command: `gobuster dir -u http://{MachineIP}:3333 -w /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt`
 
 [**Seclist's Wordlist Pack >>**](https://github.com/danielmiessler/SecLists)
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln4.jpg){: .shadow style="max-width: 80%" .normal} 
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln4.jpg){:style="max-width: 80%" .normal} 
 <br>
 Let's go for `http://[IP]:3333/internal`
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln5.jpg){: .shadow style="max-width: 80%" .normal} 
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln5.jpg){:style="max-width: 80%" .normal} 
 <br>
 It seems like we've find our playground :) Website have got an upload functionality.
 <br>
@@ -56,30 +53,28 @@ It seems like we've find our playground :) Website have got an upload functional
 ## 2-Exploitation
 First thing came into my mind was to upload a php reverse shell, so let's try it out.
 
-[**PHP Reverse Shell Script >>**](https://www.tryhackme.com/room/vulnversity)
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln6.jpg){: .shadow style="max-width: 80%" .normal} 
-<br>
+[**PHP Reverse Shell Script >>**](https://github.com/krygeNNN/phpenumerate)
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln6.jpg){: .shadow style="max-width: 80%" .normal} <br>
 Download the script by using **curl**.However in order to make it work, we need to make some configurations in the script to make it work.
 
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln7.jpg){: .shadow style="max-width: 80%" .normal} 
-<br>
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln7.jpg){: .shadow style="max-width: 80%" .normal} <br>
 Change **$ip** to your own machines ip (tryhackme's vpn tunnel) ,define the port as any random **$port**.I've changed it to the 8888 while it was 1234 by default.
 
  Configurations are all done ! Now, it is time for us to upload the reverse shell to the web server.
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln8.jpg){: .shadow style="max-width: 80%" .normal} 
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln8.jpg){:style="max-width: 80%" .normal} 
 <br>
 **Note**:My machine shutted it down while creating this post, so I had to restart it. That is why the ip have changed, don't worry :)
 
 It seems like .php extension is not allowed.However ,php extension is not the only extension that we can use, we have got couple more.You can try all of them manually, but come on, let's write a python script :)) 
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln9.jpg){: .shadow style="max-width: 80%" .normal} 
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln9.jpg){:style="max-width: 80%" .normal} 
 <br>
 [**Download the php bruter script >>**](https://www.tryhackme.com/room/vulnversity)
 Run it.
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln10.jpg){: .shadow style="max-width: 80%" .normal} 
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln10.jpg){:style="max-width: 80%" .normal} 
 <br>
 **.phtml** is the working extension. Rename the payload, **php_reverse_shell.php** into **php_reverse_shell.phtml**, and than upload it.
 
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln11.jpg){: .shadow style="max-width: 80%" .normal} 
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln11.jpg){:style="max-width: 80%" .normal} 
 <br>
 Now we have successfully injected our reverse shell script.However we also need to listen incoming connections from the server.Therefore we will use Netcat (**nc**) to listen to the port 8888, which we set in the script before.
 
@@ -91,15 +86,15 @@ Now we have successfully injected our reverse shell script.However we also need 
 |-p        | Specify source port to use                        |
 
 Full command: `nc -nvlp 8888`
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln12.jpg){: .shadow style="max-width: 80%" .normal} 
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln12.jpg){:style="max-width: 80%" .normal} 
 <br>
 While listening to port 8888, we need to activate the script that we just uploaded.
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln13.jpg){: .shadow style="max-width: 80%" .normal} 
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln13.jpg){:style="max-width: 80%" .normal} 
 <br>
 Visit this URL >> `http://{machineIP}:3333/internals/uploads`, and than click to the reverse php 
 shell script that you have uploaded. 
 
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln14.jpg){: .shadow style="max-width: 80%" .normal} 
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln14.jpg){:style="max-width: 80%" .normal} 
 <br>
 Excellent, we are in !
 <br>
@@ -107,11 +102,11 @@ Excellent, we are in !
 ## Flag Capturing and Privilege Eseclation
 Nevertheless, this shell is not stable righ now, we need to spawn a python shell.
 <br>Run `python -c 'import pty;pty.spawn("/bin/bash")'`, and also `export TERM=xterm`.
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln15.jpg){: .shadow style="max-width: 80%" .normal} 
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln15.jpg){:style="max-width: 80%" .normal} 
 <br>
 
 #### 1-User Flag
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln16.jpg){: .shadow style="max-width: 80%" .normal} 
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln16.jpg){:style="max-width: 80%" .normal} 
 <br>
 In order to get root flag, we have to escalate our privileges, let's search for SUID binaries.If you are not familiar with SUID executables, I recommend you to make your research, than come back, but basically, when you executing a SUID file, you are executing it with it's owner's permissions.We will use **find** command to scan for those binaries.
 
@@ -124,12 +119,12 @@ In order to get root flag, we have to escalate our privileges, let's search for 
 |2>/dev/null             | Redirect all stderr outputs to device null             |
 
 Full command: `find -type f -user root -perm -u=s 2>/dev/null`
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln17.jpg){: .shadow style="max-width: 80%" .normal} 
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln17.jpg){:style="max-width: 80%" .normal} 
 <br>
 Some of those binaries have set uid bit by default, however **/bin/systemctl** should not have that SUID permission by default,so let's search how we can exploit that.
 [**GTFOBins >>**](https://gtfobins.github.io/)
 GTFOBins is a github project, and it is curated list of Unix binaries that can be used to bypass local security restrictions in misconfigured systems.Click the link given above and search fore **systemctl**.
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln18.jpg){: .shadow style="max-width: 80%" .normal} 
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln18.jpg){:style="max-width: 80%" .normal} 
 <br>
 t seems like one way to exploit that SUID set systemctl is creating a temporary service.Since systemctl's burden is coordinate the services, it makes sense.However we will need to configure that service file.
 #### Service file
@@ -146,12 +141,12 @@ WantedBy=multi-user.target' > $TF
 I have manually changed the systemctl location in the given code from relative to static directory,and also ExecStart will set SUID perm to /bin/bash.
 
 Copy and paste the lines given above to shell (Press enter two times after you paste it), and than check the /bin/bash's file permissions.
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln19.jpg){: .shadow style="max-width: 80%" .normal} 
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln19.jpg){:style="max-width: 80%" .normal} 
 <br>
 As you can see, /bin/bash binary now have 's' permission, which indicates that it is a SUID executable.
 Run `bash -p` and you are good to go.
 #### 2-Root Flag
-![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln20.jpg){: .shadow style="max-width: 80%" .normal} 
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln20.jpg){:style="max-width: 80%" .normal} 
 <br>
 As you can see euid (Effective user id) set to 0 which belongs to root.Now you can get the root flag.
 
