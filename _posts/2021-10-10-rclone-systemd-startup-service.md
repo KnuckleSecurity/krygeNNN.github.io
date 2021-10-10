@@ -3,9 +3,6 @@ title: Rclone systemd startup service
 author: krygennn
 date: 2021-10-9 18:17
 categories: [Blogging,linux-tools,service-files]
-image:
-    src: /assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln1.jpg
-    alt: TRYHACKME BLUE
 tags: [rclone,rsync,systemd]
 ---
 # Rclone systemd startup service 
