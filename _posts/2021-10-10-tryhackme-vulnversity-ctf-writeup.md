@@ -26,7 +26,9 @@ Let's start with enumerating the host.I will use Network Mapper (`nmap`) tool in
 |-oN         |Outputfile                                          |
 
 Full command: `nmap {machine IP} -sV -sS -O -T4 -p- -oN vulnversity.nmap`
-![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln2.jpg){:active to create our attack vector.If you do your research and investigate whether one of these services have any vulnerabilities or not, you will return to your home empty handed.You can try anonymous login to FTP protocol, or try to make a SSH connection but you would fail just like I did.None of these services have any vulnerabilities that would put us in the target system.
+![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln2.jpg)
+<br>
+To create our attack vector.If you do your research and investigate whether one of these services have any vulnerabilities or not, you will return to your home empty handed.You can try anonymous login to FTP protocol, or try to make a SSH connection but you would fail just like I did.None of these services have any vulnerabilities that would put us in the target system.
  
 Other than that **"3333/tcp open  http   Apache httpd 2.4.18 ((Ubuntu))"** catches the eye, so lets start to investigate the webpage that the host is running on its port 3333.
 
