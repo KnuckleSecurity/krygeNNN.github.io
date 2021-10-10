@@ -124,7 +124,9 @@ Full command: `find -type f -user root -perm -u=s 2>/dev/null`
 ![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln17.jpg){:style="max-width: 80%" .normal} 
 <br>
 Some of those binaries have set uid bit by default, however **/bin/systemctl** should not have that SUID permission by default,so let's search how we can exploit that.
+<br>
 [**GTFOBins >>**](https://gtfobins.github.io/)
+<br>
 GTFOBins is a github project, and it is curated list of Unix binaries that can be used to bypass local security restrictions in misconfigured systems.Click the link given above and search fore **systemctl**.
 ![Desktop View](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln18.jpg){:style="max-width: 80%" .normal} 
 <br>
