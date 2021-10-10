@@ -19,10 +19,10 @@ aka "Windows SMB Remote Code Execution Vulnerability."
 
 ## Enumeration 
 
-In order to enumerate the host, we will run Network Mapper (nmap) to discover opened ports and services.   
+In order to enumerate the host, we will run Network Mapper (`nmap`) to discover opened ports and services.   
 
 
-| Param                        | Function          | 
+| Parameter                    | Functionality          | 
 |:-----------------------------|:-----------------|
 |-sV |Probe open ports to determine service/version info|
 |-sC or --script=default | Performs a script scan using the default set of scripts|
@@ -34,17 +34,18 @@ In order to enumerate the host, we will run Network Mapper (nmap) to discover op
 Full command : `nmap {machine IP} -sV -sC -O -T4 -p-`
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue2.jpg){: .shadow style="max-width: 80%" .normal} 
 <br>
-It seems like plenty of services are enabled in the system.However one of them catches the eye,
+It seems like plenty of services are enabled in the system.However one of them catches the eye.
 
 `445 /tcp open microsoft-ds Windows 7 Professional 7601 Service Pack 1 microsoft-ds (workgroup : WORKGROUP)` 
 
-After went through the web searching phase for that specific service, we got this
+After went through the web searching phase for that specific service, we got this:
 
 [**CVE-2017-0144 - EternalBlue SMB Remote Code Execution (MS17-010)**](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0144)
-
+<br>
 ## Exploitation 
 
 Let's use `Metasploit` framework
+<br>
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue3.jpg){: .shadow .normal}
 <br>
 And than use `MS17-010`
@@ -57,3 +58,60 @@ If you are not familiar with what an auxiliary module is, it is some kind of scr
 More technical description would be as following; An auxiliary module does not execute a payload. It can be used to perform arbitrary actions that may not be directly related to exploitation. Examples of auxiliary modules include scanners, fuzzers, and denial of service attacks. 
  
 In this case Metasploit database offers us those two auxiliary files, lets use `auxiliary/scanner/smb/smb_ms17_010` ,than set RHOSTS  as IP address of  our target machine, than run it.
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue5.jpg){: .shadow .normal}
+<br>
+As you can see, the output tells us the that, `Host is likely VULNERABLE to MS17-010` !
+After that point we got our proof that the exploit would work.So let us move to the exploitation phase.
+ 
+_Exploit - An exploit module executes a sequence of commands to target a specific vulnerability found in a system or application. An exploit module takes advantage of a vulnerability to provide access to the target system. Exploit modules include buffer overflow, code injection, and web application exploit._
+ 
+Now we will `use exploit/windows/smb/ms17_010_eternalblue.Just` like the previous auxiliary module, set RHOSTS as our target machine and run it.
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue6.jpg){: .shadow .normal}
+<br>
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue7.jpg){: .shadow .normal}
+<br>
+Congrats !!! You've hacked into the machine by using MS17-010 vulnerability.Now we have got our Meterpreter shell which provides additional powerful tools. 
+ 
+Now we need to use `getsystem` command,which is provided by Metasploit's meterpreter shell, that will use number of different techniques in attempt to gain SYSTEM level priveleges on the remote target. 
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue8.jpg){: .shadow .normal}
+<br>
+Now, lets list all runnig processes with `ps` command, we will need to migrate our suspicious process into trusted process to ensure consistency.
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue8.jpg){: .shadow .normal}
+<br>
+SearchIndexer.exe seems like a good candidate to migrate our process.So type migrate {PID} to migrate spoolsv.exe, which is our reverse tcp payload.
+
+Right now we have %100 access to target system and our session's persistance is solid, lets move on for crediantels and flags.
+<br>
+
+## Post Exploitation - Capturing the Flags 
+Just like the getsystem command, meterpreter provides `hashdump` command, which brings the system hashes for us.
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue9.jpg){: .shadow .normal}
+<br>
+We need to find out what kind of hashes they are. It is easy to tell they are NTLM hashes, because Windows is using NTLM hashes for system as default but for the best practice, lets use a hash analyzer to identify the type, you can use any hash analyzer.
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue10.jpg){: .shadow .normal}
+<br>
+As you can see, it is `NTLM`.
+
+So, as we know the hash type, we can move forward for to cracking it.I will use `John the Ripper`,you can use `Hashcat` or any other cypher cracking tool.
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue11.jpg){: .shadow .normal}
+<br>
+| Parameter                    | Functionality          | 
+|:-----------------------------|:-----------------|
+|hashes|ASCII Text file, which contains copied hashes.|
+|--wordlist| Location of the wordlist|
+|-format| Hash format|
+We've cracked the first hash.
+
+Now type shell to use windows' shell instead of meterpreter shell and start looking for flags.
+#### flag1.txt
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue12.jpg){: .shadow .normal}
+<br>
+#### flag2.txt
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue13.jpg){: .shadow .normal}
+<br>
+#### flag3.txt
+![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue14.jpg){: .shadow .normal}
+<br>
+Congrats! End of the machine.
+
+
