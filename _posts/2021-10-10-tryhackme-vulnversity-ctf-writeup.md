@@ -60,6 +60,7 @@ First thing came into my mind was to upload a php reverse shell, so let's try it
 ![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln6.jpg){: .shadow style="max-width: 80%" .normal} 
 <br>
 Download the script by using **curl**.However in order to make it work, we need to make some configurations in the script to make it work.
+
 ![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln7.jpg){: .shadow style="max-width: 80%" .normal} 
 <br>
 Change **$ip** to your own machines ip (tryhackme's vpn tunnel) ,define the port as any random **$port**.I've changed it to the 8888 while it was 1234 by default.
@@ -77,6 +78,7 @@ Run it.
 ![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln10.jpg){: .shadow style="max-width: 80%" .normal} 
 <br>
 **.phtml** is the working extension. Rename the payload, **php_reverse_shell.php** into **php_reverse_shell.phtml**, and than upload it.
+
 ![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln11.jpg){: .shadow style="max-width: 80%" .normal} 
 <br>
 Now we have successfully injected our reverse shell script.However we also need to listen incoming connections from the server.Therefore we will use Netcat (**nc**) to listen to the port 8888, which we set in the script before.
@@ -96,6 +98,7 @@ While listening to port 8888, we need to activate the script that we just upload
 <br>
 Visit this URL >> `http://{machineIP}:3333/internals/uploads`, and than click to the reverse php 
 shell script that you have uploaded. 
+
 ![Window Shadow](/assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln14.jpg){: .shadow style="max-width: 80%" .normal} 
 <br>
 Excellent, we are in !
