@@ -21,7 +21,6 @@ aka "Windows SMB Remote Code Execution Vulnerability."
 
 In order to enumerate the host, we will run Network Mapper (`nmap`) to discover opened ports and services.   
 
-
 | Parameter              | Functionality                                          | 
 |:-----------------------|:-------------------------------------------------------|
 |-sV                     | Probe open ports to determine service/version info     |
@@ -29,7 +28,6 @@ In order to enumerate the host, we will run Network Mapper (`nmap`) to discover 
 |-O                      | Enable OS detection                                    |
 |-T4                     | T{0-5} Set scan speed, higher is faster                |
 |-p-                     | Scan all 65536 ports                                   |
-
 
 Full command : `nmap {machine IP} -sV -sC -O -T4 -p-`
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue2.jpg){: .shadow style="max-width: 80%" .normal} 
@@ -42,6 +40,7 @@ After went through the web searching phase for that specific service, we got thi
 
 [**CVE-2017-0144 - EternalBlue SMB Remote Code Execution (MS17-010)**](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0144)
 <br>
+
 ## 2-Exploitation 
 
 Let's use `Metasploit` framework
@@ -95,6 +94,7 @@ As you can see, it is `NTLM`.
 So, as we know the hash type, we can move forward for to cracking it.I will use `John the Ripper`,you can use `Hashcat` or any other cypher cracking tool.
 ![Window Shadow](/assets/img/posts/tryhackme-blue-ctf-writeup/blue12.jpg){: .shadow .normal}
 <br>
+
 | Parameter                    | Functionality                                 | 
 |:-----------------------------|:----------------------------------------------|
 |hashes                        | ASCII Text file, which contains copied hashes.|
