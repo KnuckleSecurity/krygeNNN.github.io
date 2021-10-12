@@ -2,7 +2,7 @@
 title: Rclone systemd startup service 
 author: krygennn
 date: 2021-10-9 18:17
-categories: [Blogging,linux-tools,service-files]
+categories: [Blogging,linux,systemd]
 tags: [rclone,rsync,systemd]
 ---
 Create a systemd file by running;
