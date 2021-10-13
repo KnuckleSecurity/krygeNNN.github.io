@@ -16,7 +16,6 @@ same for each operating system. So if you have a broken package, or you are not 
 not comfortable with newer version of the release you may wish to downgrade it. 
 In this post you will learn how to downgrade a package and ignore updates.
 
-## 1-Download Downgrade
 
 Download utility called **downgrade** with your favorite package manager.
 ```shell
