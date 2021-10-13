@@ -1,5 +1,5 @@
 ---
-title: 3est23
+title: Downgrading Broken Packages
 author: krygennn
 date: 2021-10-12 00:59
 categories: [Blogging, linux]
