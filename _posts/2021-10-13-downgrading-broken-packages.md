@@ -35,7 +35,6 @@ Available packages (community):
 +  3)  cmatrix    2.0  2  /var/cache/pacman/pkg
 
 select a package by number: 
-
 ```
 Select which version of the program you wish to use than press enter.
 After that step, downgrade utility will ask you to whether you wish to
