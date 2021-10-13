@@ -22,7 +22,7 @@ yay -S downgrade
 ```
 After installing it run
 ```shell
-sudo downgrade <package>
+sudo downgrade cmatrix
 ```
 It will prompt you to a selection screen between version just like that
 ```
