@@ -42,7 +42,6 @@ After that step, downgrade utility will ask you to whether you wish to
 add that program to ignorepackage list to prevent later updates or not.
 ```
 add cmatrix to IgnorePkg? [y/N]
-
 ```
 If you press `y` in this step, the package wont be affected while doing
 system wide updates. However if you wish to change it back and update the
