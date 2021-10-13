@@ -1,7 +1,7 @@
 ---
 title: Downgrading Broken Packages
 author: krygennn
-date: 2021-13-10 00:51
+date: 2021-10-13 00:51
 categories: [Blogging,linux]
 tags: [arch-linux,package-manager]
 ---
