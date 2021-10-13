@@ -1,5 +1,5 @@
 ---
-title: Rclone systemd startup service 
+title: Rclone Systemd Startup Service
 author: krygennn
 date: 2021-10-9 18:17
 categories: [Blogging,linux,systemd]
