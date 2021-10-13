@@ -1,5 +1,5 @@
 ---
-title: Tryhackme Blue Ctf Writeup
+title: test
 author: krygennn
 date: 2021-10-9 00:59
 categories: [Blogging,cyber-security]
