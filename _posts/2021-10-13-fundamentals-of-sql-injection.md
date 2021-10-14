@@ -6,8 +6,8 @@ categories: [Blogging, cyber-security]
 image:
     src: /assets/img/posts/fundamentals-of-sql-injection/sql2.jpg
     alt: SQL INJECTION
-    width: 800
-    height: 500
+    width: 600
+    height: 350
 tags: [sql,sql-injection]
 ---
 In this article you will learn SQL Injection fundamentals from 0 to hero.
