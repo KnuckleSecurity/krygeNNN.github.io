@@ -4,8 +4,8 @@ author: krygennn
 date: 2021-10-13 12:00
 categories: [Blogging, cyber-security]
 image:
-    src:/assets/img/posts/fundamentals-of-sql-injection/sql2.jpg
-    alt:SQL INJECTION
+    src: /assets/img/posts/fundamentals-of-sql-injection/sql2.jpg
+    alt: SQL INJECTION
 tags: [sql,sql-injection]
 ---
 In this article you will learn SQL Injection fundamentals from 0 to hero.
