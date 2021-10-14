@@ -24,6 +24,20 @@ Let us examine the behavior of SQL codes by using [**sqliteonline**](https://www
 ![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql.jpg)
 <br>
 
+#### Why SQL ?
 As you can see, there is a table consists of 3 columns and 21 rows.Those are basically key and value pairs.
 In this spesific example `ID` is the **Key** value, `Name` and `Hint` are the values which defined by that 
-spesific 'ID' numer of **1**.
+spesific 'ID' numer of **1**.However, as you can guess, it is not practical to summon whole data each 
+time when we want to use or see one or couple parts of the data. In addition, we may want to combine different 
+data parts, so that is why we use SQL.
+
+#### SQL Basics
+Every table has its own name, and the name of the table above is **demo**.It is not needed to be an expert
+SQL programmer, but you need to understand the principles of SQL programming, so let us start with some basics.
+
+```sql
+SELECT * FROM demo;
+```
+This command selects everything from demo table, fetches full content from the table.
+You can see the output at the picture above. 
+
