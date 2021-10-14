@@ -6,7 +6,8 @@ categories: [Blogging, cyber-security]
 image:
     src: /assets/img/posts/fundamentals-of-sql-injection/sql2.jpg
     alt: SQL INJECTION
-    max-width: 50%
+    width: 300
+    height: 300
 tags: [sql,sql-injection]
 ---
 In this article you will learn SQL Injection fundamentals from 0 to hero.
@@ -19,4 +20,10 @@ you can request it in any order or concatanate it with different data held in di
 
 ### Understanding SQL
 Let us examine the behavior of SQL codes by using [**sqliteonline**](https://www.sqliteonline.com)
+
 ![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql.jpg)
+<br>
+
+As you can see, there is a table consists of 3 columns and 21 rows.Those are basically key and value pairs.
+In this spesific example `ID` is the **Key** value, `Name` and `Hint` are the values which defined by that 
+spesific 'ID' numer of **1**.
