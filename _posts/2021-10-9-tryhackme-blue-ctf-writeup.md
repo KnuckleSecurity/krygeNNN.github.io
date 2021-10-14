@@ -2,7 +2,7 @@
 title: Tryhackme Blue Ctf Writeup
 author: krygennn
 date: 2021-10-9 00:59
-categories: [Blogging,cyber-security]
+categories: [Blogging,cyber-security,tryhackme]
 image:
     src: /assets/img/posts/tryhackme-blue-ctf-writeup/blue1.jpg
     alt: TRYHACKME BLUE

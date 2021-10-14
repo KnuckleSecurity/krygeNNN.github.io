@@ -2,7 +2,7 @@
 title: Tryhackme Vulnversity Ctf Writeup
 author: krygennn
 date: 2021-10-9 18:04
-categories: [Blogging,cyber-security]
+categories: [Blogging,cyber-security,tryhackme]
 image:
     src: /assets/img/posts/tryhackme-vulnversity-ctf-writeup/vuln1.jpg
     alt: TRYHACKME VULNVERSITY
