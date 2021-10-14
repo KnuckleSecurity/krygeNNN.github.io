@@ -40,4 +40,39 @@ SELECT * FROM demo;
 ```
 This command selects everything from demo table, fetches full content from the table.
 You can see the output at the picture above. 
+<br><br>
+```sql
+SELECT * FROM demo WHERE ID=3;
+```
+If you want to bring the informations related to 'ID' number of 3, you can add `WHERE` clause at the end of the query, and specify the filter.
+![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql3.jpg)
+<br><br>
+```sql
+SELECT * FROM demo WHERE ID=3 UNION SELECT * FROM demo WHERE Name="Chart";
+```
+You can concatenate two different queries together by using 'UNION', however result of the
+queries have to have same amount of columns, otherwise it will not work. In this example, there is
+only one table called **demo**, so naturally all the selections will have 3 columns.If the result of the select queries of different
+tables have different amount of columns, you can not `UNION` the result of the selections together.
+![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql4.jpg)
+<br>
+<br>
+```sql
+SELECT * FROM demo ORDER BY name ASC;
+```
+You can order the table with `ORDER BY` clause.You can either puth column number with numerics, or column name
+both `ASC` ascending and `DESC` descending order.
+![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql5.jpg)
+<br><br>
+```sql
+SELECT table_name FROM INFORMATION_SCHEMA.TABLES ORDER BY 1 ASC;
+```
+See all the tables existing in the currently active database.
+![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql6.jpg)
+<br><br>
+```sql
+SHOW DATABASES;
+```
+See all the created databases.
+![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql7.jpg)
 
