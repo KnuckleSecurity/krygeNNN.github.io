@@ -103,9 +103,9 @@ MariaDB [(none)]> SELECT 1;
 It returns
 ```sql
 +---+
-| 1 | >>> This is the column name
+| 1 | #>>> This is the column name
 +---+
-| 1 | >>> This is the value corresponds to that column.
+| 1 | #>>> This is the value corresponds to that column.
 +---+
 ```
 Does not make too much sense right ? Let us move further.
@@ -162,9 +162,7 @@ MariaDB [(none)]> SELECT '2'+'a';
 +---------+
 ```
 Hmm, brains burning right ? It is simple really, just like before database converted string value to integer, however it could not convert
-**a** to any integer, so it considered it as **0**.
-<br>
-By having this knowledge you should guess the output of this query.
+**a** to any integer, so it considered it as **0**.By having this knowledge you should guess the output of this query.
 ```sql
 MariaDB [(none)]> SELECT 'b'+'a';
 ```
