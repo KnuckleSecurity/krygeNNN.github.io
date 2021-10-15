@@ -23,6 +23,8 @@ Examples are javascript ,ldap, xpath, host header, code, email header and crlf i
 SQL stands for **simple query language**. What it does is basically, managing data held in databases.
 It is particularly useful in handling structured data. So whenever you ask for spesific part of data
 you can request it in any order or concatanate it with different data held in different data table. 
+There are bunch of different sql types, MySQL, SqLite, PostgreSQL, Microsoft SQL Server and etc. They are
+actually more or less all the same except for the syntax diffrences between them.
 
 ### Understanding SQL
 Let us examine the behavior of SQL codes by using [**sqliteonline**](https://www.sqliteonline.com)
@@ -31,11 +33,11 @@ Let us examine the behavior of SQL codes by using [**sqliteonline**](https://www
 <br>
 
 #### Why SQL ?
-As you can see, there is a table consists of 3 columns and 21 rows.Those are basically key and value pairs.
-In this spesific example `ID` is the **Key** value, `Name` and `Hint` are the values which defined by that 
+As you can see, there is a table consists of 3 columns and 21 rows.Those are basically **key** and **value** pairs.
+In this spesific example `ID` is the **Key** value, `Name` and `Hint` are the **value**s which defined by that 
 spesific 'ID' numer of **1**.However, as you can guess, it is not practical to summon whole data each 
 time when we want to use or see one or couple parts of the data. In addition, we may want to combine different 
-data parts, so that is why we use SQL.
+data parts together, so that is why we use SQL.
 
 #### SQL Basics
 Every table has its own name, and the name of the table above is **demo**.It is not needed to be an expert
@@ -87,8 +89,91 @@ Understanding this much of SQL will do for now.In this section I wrote about bas
 sections I will be writing about tricks and tactics about SQL Injection, it is more imporant to understand very fundamentals
 rather than complex queries.
 
-## SQL BARE-BONES
-From now on, you know how sql works, and the idea behind that.In this section, before moving on to the exploitation phase, 
-you will learn bare-bones of **SQLi** and do some brainstorm.
+## UNDERSTANDING PRIMITIVE DATABASE LOGIC
+From now on, you know how sql works, and the idea behind that. In this section, before moving on to the exploitation phase, 
+you will learn bare-bones of **SQLi**, database logic and do some brainstorm. In this section I will be using **MariaDB**, it is community
+developed database management system for MySQL.
 
+### MariaDB/MySQL
+I fired up my terminal and run my mariadb service. Without selecting any database or any table, I will run the following query.
+Try to guess the result of it. 
+```sql
+MariaDB [(none)]> SELECT 1;
+```
+It returns
+```
++---+
+| 1 | >>> This is the column name
++---+
+| 1 | >>> This is the value corresponds to that column.
++---+
+```
+Does not make too much sense right ? Let us move further.
+<br>
+```sql
+MariaDB [(none)]> SELECT 2-1;
+```
+How do you think this will end up ?
+```sql
++-----+
+| 2-1 |
++-----+
+|   1 |
++-----+
+```
+From now on, we know that we can do **mathematical operations** with integers in sql this is huge.
+<br>
+```sql
+MariaDB [(none)]> SELECT '2-1';
+```
+It is same as before except for the single quotes.
+```sql
++-----+
+| 2-1 |
++-----+
+| 2-1 |
++-----+
+```
+This time what we see is returning of a string value. It is reasonable because single or double quotes
+are used for strings.
+<br>
+Everything was fine until this moment, however this time things going to change.
+```sql
+MariaDB [(none)]> SELECT '2'-'1';
+```
+It is hard to predict what is going to happen this time right ? Let us see.
+```sql
++---------+
+| '2'-'1' |
++---------+
+|       1 |
++---------+
+``` 
+Database actually performed the same mathematical operation as before when we did `SELECT 2-1`. That is because just like you,
+database's mind get confused too, so it came up with an idea that 'Oh wait, I can cast them into integers !'.Now we are one more
+step closer to understand the primitive behaviour of how databases work actually.
 
+```sql
+MariaDB [(none)]> SELECT '2'+'a';
++---------+
+| '2'+'a' |
++---------+
+|       2 |
++---------+
+```
+Hmm, brains burning right ? It is simple really, just like before database converted string value to integer, however it could not convert
+**a** to any integer, so it considered it as **0**.
+<br>
+By having this knowledge you should guess the output of this query.
+```sql
+MariaDB [(none)]> SELECT 'b'+'a';
+```
+You predicted it ?
+```sql
++---------+
+| 'b'+'a' |
++---------+
+|       0 |
++---------+
+```
+This time two non-convertible to integer values given into single quoutes, database performed **0+0** this time.
