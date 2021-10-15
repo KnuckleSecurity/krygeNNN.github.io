@@ -89,7 +89,7 @@ Understanding this much of SQL will do for now.In this section I wrote about bas
 sections I will be writing about tricks and tactics about SQL Injection, it is more imporant to understand very fundamentals
 rather than complex queries.
 
-## UNDERSTANDING PRIMITIVE DATABASE LOGIC
+## PRIMITIVES OF DATABASE LOGIC
 From now on, you know how sql works, and the idea behind that. In this section, before moving on to the exploitation phase, 
 you will learn bare-bones of **SQLi**, database logic and do some brainstorm. In this section I will be using **MariaDB**, it is community
 developed database management system for MySQL.
@@ -101,7 +101,7 @@ Try to guess the result of it.
 MariaDB [(none)]> SELECT 1;
 ```
 It returns
-```
+```sql
 +---+
 | 1 | >>> This is the column name
 +---+
@@ -121,7 +121,7 @@ How do you think this will end up ?
 |   1 |
 +-----+
 ```
-From now on, we know that we can do **mathematical operations** with integers in sql this is huge.
+From now on, we know that we can do **mathematical operations** with integers in sql, this is huge.
 <br>
 ```sql
 MariaDB [(none)]> SELECT '2-1';
