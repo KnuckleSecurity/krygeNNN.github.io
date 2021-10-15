@@ -13,6 +13,12 @@ tags: [sql,sql-injection]
 In this article you will learn SQL Injection fundamentals from 0 to hero.
 <br>
 In order to understand SQL injections, it is essential to observe those two concepts seperately.
+
+## What is Injection ?
+Injection refers to a broad variety of attack vectors. An attacker feeds the program with malicious input.
+This input interpreted by the program and works for attacker's favour.This vulnerability occurs when the input is not controlled 
+with meticulousness before or after input has taken.There are bunch of different kind of injections out there.
+Examples are javascript ,ldap, xpath, host header, code, email header and crlf injections and SQL injection is one of them.
 ## What is SQL ?
 SQL stands for **simple query language**. What it does is basically, managing data held in databases.
 It is particularly useful in handling structured data. So whenever you ask for spesific part of data
@@ -60,7 +66,7 @@ tables have different amount of columns, you can not `UNION` the result of the s
 ```sql
 SELECT * FROM demo ORDER BY name ASC;
 ```
-You can order the table with `ORDER BY` clause.You can either puth column number with numerics, or column name
+You can order the table with `ORDER BY` clause.You can either put column number with numerics, or column name
 both `ASC` ascending and `DESC` descending order.
 ![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql5.jpg)
 <br><br>
@@ -75,4 +81,9 @@ SHOW DATABASES;
 ```
 See all the created databases.
 ![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql7.jpg)
+
+##### Summary
+Understanding this much of SQL will do for now.In this section I wrote about basics of SQL, however in the following
+sections I will be writing about tricks and tactics about SQL Injection, it is more imporant to understand very fundamentals
+rather than complex queries.
 
