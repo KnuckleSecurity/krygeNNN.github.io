@@ -84,7 +84,7 @@ SHOW DATABASES;
 See all the created databases.
 ![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql7.jpg)
 
-##### Summary
+### Summary
 Understanding this much of SQL will do for now.In this section I wrote about basics of SQL, however in the following
 sections I will be writing about tricks and tactics about SQL Injection, it is more imporant to understand very fundamentals
 rather than complex queries.
