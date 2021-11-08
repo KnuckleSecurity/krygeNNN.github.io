@@ -4,4 +4,5 @@ icon: fas fa-file
 order: 5
 ---
 Nothing here yet
-<image src="/assets/documents/Burak-Baris.pdf"/>
+<object data="/assets/documents/Burak-Baris.pdf" type="application/pdf" width="100%"> 
+</object>
