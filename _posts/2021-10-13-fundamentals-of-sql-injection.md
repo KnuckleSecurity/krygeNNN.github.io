@@ -97,7 +97,7 @@ developed database management system for MySQL.
 ### MariaDB/MySQL
 I fired up my terminal and run my mariadb service. Without selecting any database or any table, I will run the following query.
 Try to guess the result of it. 
-```sql
+- ```sql
 MariaDB [(none)]> SELECT 1;
 ```
 It returns
@@ -110,7 +110,8 @@ It returns
 ```
 Does not make too much sense right ? Let us move further.
 <br>
-```sql
+<br>
+- ```sql
 MariaDB [(none)]> SELECT 2-1;
 ```
 How do you think this will end up ?
@@ -123,7 +124,8 @@ How do you think this will end up ?
 ```
 From now on, we know that we can do **mathematical operations** with integers in sql, this is huge.
 <br>
-```sql
+<br>
+- ```sql
 MariaDB [(none)]> SELECT '2-1';
 ```
 It is same as before except for the single quotes.
@@ -137,8 +139,8 @@ It is same as before except for the single quotes.
 This time what we see is returning of a string value. It is reasonable because single or double quotes
 are used for strings.
 <br>
-Everything was fine until this moment, however this time things going to change.
-```sql
+<br>
+- ```sql
 MariaDB [(none)]> SELECT '2'-'1';
 ```
 It is hard to predict what is going to happen this time right ? Let us see.
@@ -152,8 +154,9 @@ It is hard to predict what is going to happen this time right ? Let us see.
 Database actually performed the same mathematical operation as before when we did `SELECT 2-1`. That is because just like you,
 database's mind get confused too, so it came up with an idea that 'Oh wait, I can cast them into integers !'.Now we are one more
 step closer to understand the primitive behaviour of how databases work actually.
-
-```sql
+<br>
+<br>
+- ```sql
 MariaDB [(none)]> SELECT '2'+'a';
 +---------+
 | '2'+'a' |
@@ -163,7 +166,9 @@ MariaDB [(none)]> SELECT '2'+'a';
 ```
 Hmm, brains burning right ? It is simple really, just like before database converted string value to integer, however it could not convert
 **a** to any integer, so it considered it as **0**.By having this knowledge you should guess the output of this query.
-```sql
+<br>
+<br>
+- ```sql
 MariaDB [(none)]> SELECT 'b'+'a';
 ```
 You predicted it ?
@@ -175,3 +180,53 @@ You predicted it ?
 +---------+
 ```
 This time two non-convertible to integer values given into single quoutes, database performed **0+0** this time.
+<br>
+<br>
+- ```sql
+MariaDB[(none)]> SELECT '2' '1';
+```
+This time instead putting an operation sign between those strings, we will left it blank.
+```
++----+
+| 2  |
++----+
+| 21 |
++----+
+```
+As you can see, strings had been concatanated. So `SELECT '2' '1'` and `concat('2','1')` do the same thing.
+<br>
+<br>
+- ```sql
+MariaDB[(none)]> SELECT '2' '1' 'a';
+```
+You should be able to guess this one.
+```sql
++-----+
+| 2   |
++-----+
+| 21a |
++-----+
+```
+Yes you are right, still string concat.
+<br>
+<br>
+- ```sql
+MariaDB[(none)]> SELECT '2' '1' 'a'-1;
+```
+From now on we know that, `'a'-1` will result -1. So this time instead of string concat, it will substract
+-1 from 21.
+```sql
++---------------+
+| '2' '1' 'a'-1 |
++---------------+
+|            20 |
++---------------+
+```
+<br>
+<br>
+There are few operants that you need to know.<br>
+`^`=XOR operator
+`!`=NOT operator
+
+
+To be continued.
