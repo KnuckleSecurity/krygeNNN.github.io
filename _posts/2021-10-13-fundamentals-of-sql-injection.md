@@ -468,7 +468,7 @@ MariaDB [testdb]> SELECT concat("FN:",FirstName, "  LN:",LastName) from users;
 | FN:Burak3  LN:Baris3                      |
 +-------------------------------------------+
 ```
-### Proof of concept
+### Guess correction
 As you remember, at the `Guessing the design` heading, we come up with a possible query that runs at the server
 just by observing the behaviour of the web application. After doing more scans in the database, I see that, that guess
 we made above, is kind of close to the real design.
