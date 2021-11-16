@@ -1,5 +1,5 @@
 ---
-title: Fundamentals of SQL Injection
+title: SQL Injection
 author: krygennn
 date: 2021-10-13 12:00
 categories: [Blogging, cyber-security]
@@ -658,3 +658,7 @@ else:
 ```
 If this was the case, we could not see any result of the query on the screen, neither
 images nor titles etc. Also can not perform error based sqli due to exception handling added.How we can extract any data, even make sure there is a sql injection vulnerability when our eyes are blind ?
+<br>
+<br>
+<br>
+To be continued
