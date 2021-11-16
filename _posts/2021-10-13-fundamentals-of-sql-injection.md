@@ -293,7 +293,7 @@ query="SELECT * FROM news WHERE id ="+id
 2-`UNION` has its limitations, the number of columns that return for each query should match.<br>
 It is time to do some real sql injection on a web page.
 
-## VULNWEB 
+## VULNWEB - UNION SQLi
 <http://test.php.vulnweb.com> is a vulnerable website for pentesting practice. Navigate to the web page.
 ### Remembering the principles
 As we talked it about before, we have a principle that has two parts.
