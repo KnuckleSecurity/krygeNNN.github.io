@@ -4,23 +4,27 @@ author: krygennn
 date: 2021-11-18 12:00
 categories: [Blogging, Networking]
 tags: [internet protocols,ip-addresses]
-
+image:
+    src: /assets/img/posts/ipv4-protocol/ip1.jpg
+    alt: SUBNETTING
+    width: 800
+    height: 450
 ---
 ## IPv4
 
-IPv4 stands for Internet Protocol version 4. IP's are addresses for users on the internet. M essages and packages delivered via
+IPv4 stands for Internet Protocol version 4. IPs are addresses for users on the internet. Messages and packages delivered via
 IP addresses. IPv4 address spaces consists of four octets. Depending on the class and configuration, some portion of bits in the
-octet represents the network ID, while rest represents hosts.
+octet represents the network ID, while the rest represents hosts.
 <br><br>
 An IP address consists of 4 octets, which
-determines the class and configuration of a network, for example you can think of an ip address as Octet1.Octet2.Octet3.Octet4
+determines the class and configuration of a network, for example you can think of an IP address as Octet1.Octet2.Octet3.Octet4
 <br><br>
 There are 5 IPv4 classes that determines which portion of the network is usable for devices you want to connect and how much of
 them are allowed. Each has its own usable address spaces for maximum range of devices.
 ### CLASS A
 
 Class A type is for big scale network insfrastructures with large number of total hosts needed.By using the first octet for the
-network ID, class A grants for 126 networks with 16,777,214 hosts per network.First bit in the first octet is always zero, rest of the
+network ID, class A grants for 126 networks with 16,777,214 hosts per network. The first bit in the first octet is always zero, the rest of the
 7 bits creates different network ID's when they are turned on.
 
 |:-------|:-------|
@@ -37,8 +41,8 @@ network ID, class A grants for 126 networks with 16,777,214 hosts per network.Fi
 * Subnet Mask: 255.0.0.0 (8 bits) 
 
 ### CLASS B 
-Class B type is for medium to large sized networks. By using the first two octets for the network ID, class B grants for
-16,382 networks with 65,534 hosts per network.The first two bits of the first octet are always 1 and 0, rest of the 14 bits 
+Class B type is for medium to large-sized networks. By using the first two octets for the network ID, class B grants for
+16,382 networks with 65,534 hosts per network. The first two bits of the first octet are always 1 and 0, the rest of the 14 bits 
 creates different network ID's when they are turned on.
 
 |:-------|:-------|
@@ -55,8 +59,8 @@ creates different network ID's when they are turned on.
 * Number of hosts: 65,534
 
 ### CLASS C
-Cass C type is for small sized local area networks (LANs). By using first three octets for the network ID, class C grants for
-2,097,150 networks with 254 hosts per network.The first three bits of the first are always 1 1 0, rest of the 21 bits creates
+Cass C type is for small-sized local area networks (LANs). By using the first three octets for the network ID, class C grants for
+2,097,150 networks with 254 hosts per network. The first three bits of the first are always 1 1 0, the rest of the 21 bits creates
 different network ID's when they are turned on.
 
 
@@ -77,7 +81,7 @@ different network ID's when they are turned on.
 ### CLASS D
 Class D type is not for hosts and used for multicasting. In order to send a stream of data  to thousands of nodes across the 
 Internet concurrently, multicasting is required. Mostly used for video, audio streaming and broadcast any kind of altered global
-data to the instutions or organizations, for example currency rate information.
+data to the institutions or organizations, for example currency rate information.
 
 * Range 224.0.0.0 to 230.255.255.255
     * First octet value range from 224 to 239
@@ -96,15 +100,15 @@ Class E type is reserved addresses for research purposes (NASA etc.), and not av
 ## PRIVATE IP ADDRESSES
 
 Within every and each network class, there are specified IP addresses that are specifically reserved for internal/private use 
-only. These IP addresses cannot use internet as they are not routable and ensure internal communication. For instance, 
-FTP and web servers have to use public IP addresses instead of private. However, within a buisiness or a home network, 
+only. These IP addresses cannot use internet as they are not routeable and ensure internal communication. For instance, 
+FTP and web servers have to use public IP addresses instead of private. However, within a business or a home network, 
 private IP addresses leased to the devices.  
 
 * **Class A Private Range**: from 10.0.0.0 to 10.255.255.255 
 Class B APIPA Private Range: from 169.254.0.0 to 169.254.255.255
-    * In general a Dynamic Host Configuration Protocol (DHCP) server is used to lease IP addresses to any woken device within 
-the network. However if there is not one, or device is not configured properly for DHCP offer, Automatic Private IP Adressing
-(APIPA) is used to assign private ip address to the device in question **if it is Microsoft-based device**.
+    * In general, a Dynamic Host Configuration Protocol (DHCP) server is used to lease IP addresses to any woken device within 
+the network. However, if there is not one, or the device is not configured properly for DHCP offer, Automatic Private IP Addressing
+(APIPA) is used to assign a private IP address to the device in question **if it is a Microsoft-based device**.
 
 * **Class B Private Range**: from 172.16.0.0 172.31.255.255
 * **Class C Private Range**: from 192.168.0.0 to 192.168.255.255
@@ -116,7 +120,7 @@ virtual IP addresses and can not be assigned to a device as a logical address.
 <br><br>
 The most common one is **127.0.0.1**
 , which is repeatedly used to troubleshoot the network connectivity issues using the ICMP protocol. If
-there is a connectivity issue, before checking for network infrastructure or the other nodes, making sure of the TCP/IP stack
+there is a connectivity issue, before checking for network infrastructures or the other nodes, making sure of the TCP/IP stack
 is correctly working on that machine must be prior check as the ICMP packet that you sent to that special IP address tests each
 layer. If ping responses with a packet loss, then the connectivity issue is on the local computer, you would need to resolve
-this first. If there is no packet loss you can start to explore other possibilities thay may cause failure.
+this first. If there is no packet loss, you can start to explore other possibilities that may cause failure.
