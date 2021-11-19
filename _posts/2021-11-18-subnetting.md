@@ -7,7 +7,7 @@ image:
     src: /assets/img/posts/subnetting/subnetting1.jpg
     alt: SUBNETTING
     width: 800
-    height: 450V
+    height: 450
 tags: [subnetting,switch,router]
 
 ---
@@ -43,3 +43,6 @@ both for them to see each other's traffic, they are completely different departm
 |Network Security        | Subnetting facilitates network management for network administrators,<br>thus, more detailed traffic control can be implemented. It also reduces <br>the risk of spread by quarantining compromised network sections.     |
 |Reduces Traffic Congestion | Lesser unnecessary network traffic when each department communicates <br>in its own channel. Without subnetting, every device sends and receives <br>messages from a shared channel, with that much of packages, some of the <br>data may get corrupted or even the network itself can collapse.
 |Improve Speed and Performance | After sending a broadcast message, every device on the network will <br>receive and reply to that message even though the message is not relevant <br>for most of the machines.By doing that, network capacity and bandwidth <br>getting drained.However, with subnets only the relevant machines are in<br> communication.This means performance !
+
+**Note:**Before reading further, I highly recommend you to read that blogpost first.<br>
+[IPv4]()
