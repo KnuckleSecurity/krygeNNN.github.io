@@ -113,7 +113,7 @@ the network. However, if there is not one, or the device is not configured prope
 * **Class B Private Range**: from 172.16.0.0 172.31.255.255
 * **Class C Private Range**: from 192.168.0.0 to 192.168.255.255
 
-## SPECIAL IP ADDRESSES**
+## SPECIAL IP ADDRESSES
 
 IP Range from 127.0.0.1 to 172.255.255.255 are used for network testing, which also referred as loop-back addresses. These are
 virtual IP addresses and can not be assigned to a device as a logical address. 
