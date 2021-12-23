@@ -6,7 +6,7 @@ categories: [Blogging,cyber-security,tryhackme]
 image:
     src: /assets/img/posts/tryhackme-blue-ctf-writeup/blue1.jpg
     alt: TRYHACKME BLUE
-tags: [ctf,pentesting,meterpreter,remote-code-execution,buffer-overflow,cracking]
+tags: [ctf,pentesting,metasploit,remote-code-execution,buffer-overflow,cracking]
 ---
 [**Solve Yourself >>**](https://www.tryhackme.com/room/blue)
 
@@ -17,7 +17,7 @@ aka "Windows SMB Remote Code Execution Vulnerability."
 <br>
 ## 1-Enumeration 
 
-In order to enumerate the host, we will run Network Mapper (**nmap**) to discover opened ports and services.   
+Let us run Network Mapper (**nmap**) to discover opened ports and services.   
 
 | Parameter              | Functionality                                          | 
 |:-----------------------|:-------------------------------------------------------|
