@@ -3,7 +3,7 @@ title: IPv4 Protocol
 author: krygennn
 date: 2021-11-18 12:00
 categories: [Blogging, Networking]
-tags: [internet protocols,ip-addresses]
+tags: [network protocols,ip-addresses]
 image:
     src: /assets/img/posts/ipv4-protocol/ip1.jpg
     alt: SUBNETTING
